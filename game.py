@@ -4,7 +4,7 @@ import math
 pygame.init()
 
 # Screen settings
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Hexagonal grid (Cube Coordinates)")
 
@@ -30,8 +30,32 @@ DIRECTIONS = [
 # Function to compute pixel position of the center of the hexagon
 def cube_to_pixel(x, y, z):
     px = HEX_SIZE * (3/2 * x) + WIDTH // 2
-    py = HEX_SIZE * (math.sqrt(3) * -(z + x / 2)) + HEIGHT // 2
+    py = HEX_SIZE * (math.sqrt(3) * (z + x / 2)) + HEIGHT // 2
     return (px, py)
+
+def pixel_to_cube(px, py):
+    px = px - WIDTH // 2
+    py = py - HEIGHT // 2
+    x = (px * 2/3) / HEX_SIZE
+    z = (-1/3 * px + math.sqrt(3)/3 * py) / HEX_SIZE
+    y = -x - z 
+    x, y, z = cube_round(x, y, z)
+    print("Pixels: ", px, py)
+    print("Coords: ", x,y,z)
+    return cube_round(x, y, z)
+
+def cube_round(x, y, z):
+    rx, ry, rz = round(x), round(y), round(z)
+    dx, dy, dz = abs(rx - x), abs(ry - y), abs(rz - z)
+
+    if dx > dy and dx > dz:
+        rx = -ry - rz
+    elif dy > dz:
+        ry = -rx - rz
+    else:
+        rz = -rx - ry
+    
+    return rx, ry, rz
 
 def draw_hex(surface, x, y, z, color):
     px, py = cube_to_pixel(x, y, z)
@@ -58,9 +82,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            # elif event.type == pygame.MOUSEBUTTONDOWN:
-            #     mx, my = pygame.mouse.get_pos()
-            #     x, y, z = pixel_to_cube(mx, my)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mx, my = pygame.mouse.get_pos()
+                x, y, z = pixel_to_cube(mx, my)
         
         for (x, y, z) in grid:
             color = BLACK
