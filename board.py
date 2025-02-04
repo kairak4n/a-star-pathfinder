@@ -1,5 +1,5 @@
-from constants import HEX_SIZE, WIDTH, HEIGHT
 import math
+import constants as ct
 
 class Board:
     def __init__(self, radius):
@@ -14,15 +14,15 @@ class Board:
 
     @staticmethod
     def cube_to_pixel(x, y, z):
-        px = HEX_SIZE * (3/2 * x) + WIDTH // 2
-        py = HEX_SIZE * (math.sqrt(3) * (z + x / 2)) + HEIGHT // 2
+        px = ct.HEX_SIZE * (3/2 * x) + ct.WIDTH // 2
+        py = ct.HEX_SIZE * (math.sqrt(3) * (z + x / 2)) + ct.HEIGHT // 2
         return (px, py)
     
     def pixel_to_cube(self, px, py):
-        px = px - WIDTH // 2
-        py = py - HEIGHT // 2
-        x = (px * 2/3) / HEX_SIZE
-        z = (-1/3 * px + math.sqrt(3)/3 * py) / HEX_SIZE
+        px = px - ct.WIDTH // 2
+        py = py - ct.HEIGHT // 2
+        x = (px * 2/3) / ct.HEX_SIZE
+        z = (-1/3 * px + math.sqrt(3)/3 * py) / ct.HEX_SIZE
         y = -x - z 
         x, y, z = self.cube_round(x, y, z)
         print("Pixels: ", px, py)
