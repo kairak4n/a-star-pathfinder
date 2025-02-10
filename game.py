@@ -2,10 +2,11 @@ import pygame
 import math
 from board import Board
 import constants as ct
+from node import Node
 
 # Screen settings
 screen = pygame.display.set_mode((ct.WIDTH, ct.HEIGHT))
-pygame.display.set_caption("Hexagonal grid (Cube Coordinates)")
+pygame.display.set_caption("A* Path Finding Algorithm")
 
 board = Board(5)
 
@@ -40,10 +41,11 @@ def main():
         
         for (x, y, z) in grid:
             color = ct.BLACK
-            draw_hex(screen, x, y, z, color)
+            node = Node(x, y, z, 5)
+            node.draw(screen)
         
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(1)
 
     pygame.quit()
 
