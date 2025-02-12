@@ -1,16 +1,12 @@
 import math
 import constants as ct
+from node import Node
+import pygame
 
 class Board:
     def __init__(self, radius):
         self.radius = radius
-        self.grid = {
-            (x, y, z): True 
-            for x in range(-radius, radius + 1) 
-            for y in range(-radius, radius + 1) 
-            for z in range(-radius, radius + 1) 
-            if x + y + z == 0
-        }
+        self.grid = self.make_grid()
 
     @staticmethod
     def cube_to_pixel(x, y, z):
@@ -25,8 +21,6 @@ class Board:
         z = (-1/3 * px + math.sqrt(3)/3 * py) / ct.HEX_SIZE
         y = -x - z 
         x, y, z = self.cube_round(x, y, z)
-        print("Pixels: ", px, py)
-        print("Coords: ", x,y,z)
         return self.cube_round(x, y, z)
 
     @staticmethod
@@ -42,3 +36,26 @@ class Board:
             rz = -rx - ry
         
         return rx, ry, rz
+
+    @staticmethod
+    def h(n1, n2):
+        x1, y1, z1 = n1.x, n1.y, n1.z
+        x2, y2, z2 = n2.x, n2.y, n2.z
+        ax, ay, az = abs(x1 - x2), abs(y1, y2), abs(z1 - z2)
+        return max(ax, ay, az)
+
+    def make_grid(self):
+        grid = {}
+        r = self.radius
+        for x in range(-r, r + 1):
+            for y in range(-r, r + 1):
+                for z in range(-r, r + 1):
+                    if x + y + z == 0:
+                        grid[(x, y, z)] = Node(x, y, z, 0)
+        return grid
+
+    def draw_grid(self, win):
+        win.fill(ct.WHITE)
+        for pos in self.grid:
+            self.grid[pos].draw(win)
+        pygame.display.update()
