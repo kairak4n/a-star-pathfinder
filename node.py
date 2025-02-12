@@ -70,19 +70,19 @@ class Node:
     def update_neighbours(self, grid):
         self.neighbours = []
 
-        if self.x < self.grid_r and not grid[self.x + 1, self.y - 1, self.z].is_barrier(): # Southeast
+        if self.x < self.grid_r and self.y > -self.grid_r and not grid[self.x + 1, self.y - 1, self.z].is_barrier(): # Southeast
             self.neighbours.append(grid[self.x + 1, self.y - 1, self.z])
-        if self.x < self.grid_r and not grid[self.x + 1, self.y, self.z - 1].is_barrier(): # Northeast
+        if self.x < self.grid_r and self.z > -self.grid_r and not grid[self.x + 1, self.y, self.z - 1].is_barrier(): # Northeast
             self.neighbours.append(grid[self.x + 1, self.y, self.z - 1])
             
-        if self.y < self.grid_r and not grid[self.x, self.y + 1, self.z - 1].is_barrier(): # North
+        if self.y < self.grid_r and self.z > -self.grid_r and not grid[self.x, self.y + 1, self.z - 1].is_barrier(): # North
             self.neighbours.append(grid[self.x, self.y + 1, self.z - 1])
-        if self.y < self.grid_r and not grid[self.x - 1, self.y + 1, self.z].is_barrier(): # Northwest
+        if self.y < self.grid_r and self.x > -self.grid_r and not grid[self.x - 1, self.y + 1, self.z].is_barrier(): # Northwest
             self.neighbours.append(grid[self.x - 1, self.y + 1, self.z])
 
-        if self.z < self.grid_r and not grid[self.x - 1, self.y, self.z + 1].is_barrier(): # Southwest
+        if self.z < self.grid_r and self.x > -self.grid_r and not grid[self.x - 1, self.y, self.z + 1].is_barrier(): # Southwest
             self.neighbours.append(grid[self.x - 1, self.y, self.z + 1])
-        if self.z < self.grid_r and not grid[self.x, self.y - 1, self.z + 1].is_barrier():    # South
+        if self.z < self.grid_r and self.y > -self.grid_r and not grid[self.x, self.y - 1, self.z + 1].is_barrier():    # South
             self.neighbours.append(grid[self.x, self.y - 1, self.z + 1])
 
     def __lt__(self, other):

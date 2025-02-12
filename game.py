@@ -51,9 +51,10 @@ def main():
                     end = None
             
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not started:
+                if event.key == pygame.K_SPACE and start and end:
                     for coord in board.grid:
                         board.grid[coord].update_neighbours(board.grid)
+                    board.astar(lambda: board.draw_grid(screen),board.grid, start, end)
         
         board.draw_grid(screen)
         
