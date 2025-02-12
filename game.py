@@ -10,42 +10,47 @@ pygame.display.set_caption("A* Path Finding Algorithm")
 
 board = Board(5)
 
-def draw_hex(surface, x, y, z, color):
-    px, py = board.cube_to_pixel(x, y, z)
-    points = [
-        (
-            px + ct.HEX_SIZE * math.cos(math.pi / 3 * i),
-            py + ct.HEX_SIZE * math.sin(math.pi / 3 * i)
-        ) for i in range(6)
-    ]
-    pygame.draw.polygon(surface, color, points, 2)
-
 def main():
     pygame.init()
     screen = pygame.display.set_mode((ct.WIDTH, ct.HEIGHT))
     clock = pygame.time.Clock()
 
-    grid = {(x, y, z): True for x in  range(-5, 6) for y in range(-5, 6) for z in range(-5, 6) if x + y + z == 0}
     start, end = None, None
-
     running = True
+    started = False
     while running:
-        screen.fill(ct.WHITE)
+        board.draw_grid(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if started:
+                continue
+            if pygame.mouse.get_pressed()[0]:
+                print(start.x if start else None, end.x if end else None)
+                # left mouse button pressed
+                pos = pygame.mouse.get_pos()
+                x, y, z = board.pixel_to_cube(pos[0], pos[1])
+                node = board.grid[x, y, z]
+                if not start and node != end:
+                    start = node
+                    start.make_start()
+                elif not end and node != start:
+                    end = node
+                    end.make_end()
+                elif node != start and node != end:
+                    node.make_barrier()
+            elif pygame.mouse.get_pressed()[2]:
+                # right mouse button pressed
+                pass
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
                 x, y, z = board.pixel_to_cube(mx, my)
         
-        for (x, y, z) in grid:
-            color = ct.BLACK
-            node = Node(x, y, z, 5)
-            node.draw(screen)
+        board.draw_grid(screen)
         
         pygame.display.flip()
-        clock.tick(1)
+        clock.tick(30)
 
     pygame.quit()
 
