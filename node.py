@@ -18,28 +18,6 @@ class Node:
         py = ct.HEX_SIZE * (math.sqrt(3) * (z + x / 2)) + ct.HEIGHT // 2
         return (px, py)
 
-    @staticmethod
-    def cube_round(x, y, z):
-        rx, ry, rz = round(x), round(y), round(z)
-        dx, dy, dz = abs(rx - x), abs(ry - y), abs(rz - z)
-        # adjust the rounded values to satisfy the condition x + y = -z
-        if dx > dy and dx > dz:
-            rx = -rx - rz
-        elif dy > dz:
-            ry = -rx - rz
-        else:
-            rz = -rx - ry
-        return rx, ry, rx
-    
-    def pixel_to_cube(self, px, py):
-        px = px - ct.WIDTH // 2
-        py = py - ct.HEIGHT // 2
-        x = (py * 2/3) / ct.HEX_SIZE
-        z = (-1/3 * px + math.sqrt(3)/3 * py) / ct.HEX_SIZE
-        y = -x - z
-        x, y, z = self.cube_round(x, y, z)
-        return self.cube_round(x, y, z)
-
     def get_pos(self):
         return self.x, self.y, self.z
 
@@ -71,7 +49,7 @@ class Node:
         self.color = ct.BLACK
     
     def make_start(self):
-        self.color = ct.GREEN
+        self.color = ct.ORANGE
     
     def make_end(self):
         self.color = ct.TURQUOISE
@@ -86,6 +64,7 @@ class Node:
                 self.py + ct.HEX_SIZE * math.sin(math.pi / 3 * i)
             ) for i in range(6)
         ]
+        pygame.draw.polygon(win, self.color, points)
         pygame.draw.polygon(win, ct.BLACK, points, 2)
     
     def update_neighbours(self, grid):
