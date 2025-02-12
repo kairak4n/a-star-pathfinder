@@ -51,7 +51,7 @@ class Board:
             for y in range(-r, r + 1):
                 for z in range(-r, r + 1):
                     if x + y + z == 0:
-                        grid[(x, y, z)] = Node(x, y, z, 0)
+                        grid[(x, y, z)] = Node(x, y, z, self.radius)
         return grid
 
     def draw_grid(self, win):

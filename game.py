@@ -44,14 +44,16 @@ def main():
                 pos = pygame.mouse.get_pos()
                 x, y, z = board.pixel_to_cube(pos[0], pos[1])
                 node = board.grid[x, y, z]
+                node.reset()
                 if node == start:
                     start = None
                 elif node == end:
                     end = None
-                node.reset()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mx, my = pygame.mouse.get_pos()
-                x, y, z = board.pixel_to_cube(mx, my)
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and not started:
+                    for coord in board.grid:
+                        board.grid[coord].update_neighbours(board.grid)
         
         board.draw_grid(screen)
         

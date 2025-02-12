@@ -3,14 +3,14 @@ import math
 import pygame
 
 class Node:
-    def __init__(self, x, y, z, total_rows):
+    def __init__(self, x, y, z, grid_r):
         self.x = x
         self.y = y
         self.z = z
         self.px, self.py = self.cube_to_pixel(x, y, z)
         self.color = ct.WHITE
         self.neighbours = []
-        self.total_rows = total_rows
+        self.grid_r = grid_r
     
     @staticmethod
     def cube_to_pixel(x, y, z):
@@ -68,7 +68,22 @@ class Node:
         pygame.draw.polygon(win, ct.BLACK, points, 2)
     
     def update_neighbours(self, grid):
-        pass
+        self.neighbours = []
+
+        if self.x < self.grid_r and not grid[self.x + 1, self.y - 1, self.z].is_barrier(): # Southeast
+            self.neighbours.append(grid[self.x + 1, self.y - 1, self.z])
+        if self.x < self.grid_r and not grid[self.x + 1, self.y, self.z - 1].is_barrier(): # Northeast
+            self.neighbours.append(grid[self.x + 1, self.y, self.z - 1])
+            
+        if self.y < self.grid_r and not grid[self.x, self.y + 1, self.z - 1].is_barrier(): # North
+            self.neighbours.append(grid[self.x, self.y + 1, self.z - 1])
+        if self.y < self.grid_r and not grid[self.x - 1, self.y + 1, self.z].is_barrier(): # Northwest
+            self.neighbours.append(grid[self.x - 1, self.y + 1, self.z])
+
+        if self.z < self.grid_r and not grid[self.x - 1, self.y, self.z + 1].is_barrier(): # Southwest
+            self.neighbours.append(grid[self.x - 1, self.y, self.z + 1])
+        if self.z < self.grid_r and not grid[self.x, self.y - 1, self.z + 1].is_barrier():    # South
+            self.neighbours.append(grid[self.x, self.y - 1, self.z + 1])
 
     def __lt__(self, other):
         return False
