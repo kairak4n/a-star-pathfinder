@@ -27,7 +27,6 @@ def main():
             if started:
                 continue
             if pygame.mouse.get_pressed()[0]:
-                print(start.x if start else None, end.x if end else None)
                 # left mouse button pressed
                 pos = pygame.mouse.get_pos()
                 x, y, z = board.pixel_to_cube(pos[0], pos[1])
@@ -42,7 +41,14 @@ def main():
                     node.make_barrier()
             elif pygame.mouse.get_pressed()[2]:
                 # right mouse button pressed
-                pass
+                pos = pygame.mouse.get_pos()
+                x, y, z = board.pixel_to_cube(pos[0], pos[1])
+                node = board.grid[x, y, z]
+                if node == start:
+                    start = None
+                elif node == end:
+                    end = None
+                node.reset()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
                 x, y, z = board.pixel_to_cube(mx, my)
