@@ -1,5 +1,6 @@
-HEX_SIZE = 40 # Hex edge length
-WIDTH, HEIGHT = 1200, 800
+HEX_SIZE = 20 # Hex edge length
+WIDTH, HEIGHT = 2400, 1400
+GRID_RADIUS =  20
 
 # Colors
 RED = (255, 0, 0)
