@@ -8,13 +8,13 @@ from node import Node
 screen = pygame.display.set_mode((ct.WIDTH, ct.HEIGHT))
 pygame.display.set_caption("A* Path Finding Algorithm")
 
-board = Board(ct.GRID_RADIUS)
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((ct.WIDTH, ct.HEIGHT))
     clock = pygame.time.Clock()
 
+    board = Board(ct.GRID_RADIUS)
     start, end = None, None
     running = True
     started = False
@@ -57,6 +57,9 @@ def main():
                     for coord in board.grid:
                         board.grid[coord].update_neighbours(board.grid)
                     board.astar(lambda: board.draw_grid(screen),board.grid, start, end)
+                if event.key == pygame.K_c:
+                    start, end = None, None
+                    board.reset()
         
         board.draw_grid(screen)
         

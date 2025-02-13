@@ -101,6 +101,9 @@ class Board:
                         grid[(x, y, z)] = Node(x, y, z, self.radius)
         return grid
 
+    def reset(self):
+        self.grid = self.make_grid()
+
     def draw_grid(self, win):
         win.fill(ct.WHITE)
         for pos in self.grid:
