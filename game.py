@@ -8,7 +8,7 @@ from node import Node
 screen = pygame.display.set_mode((ct.WIDTH, ct.HEIGHT))
 pygame.display.set_caption("A* Path Finding Algorithm")
 
-board = Board(5)
+board = Board(ct.GRID_RADIUS)
 
 def main():
     pygame.init()
@@ -30,6 +30,8 @@ def main():
                 # left mouse button pressed
                 pos = pygame.mouse.get_pos()
                 x, y, z = board.pixel_to_cube(pos[0], pos[1])
+                if max(abs(x), abs(y), abs(z)) > ct.GRID_RADIUS:
+                    continue
                 node = board.grid[x, y, z]
                 if not start and node != end:
                     start = node
