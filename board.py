@@ -65,7 +65,9 @@ class Board:
             open_set_hash.remove(current)
 
             if current == end:
-                # make path
+                while current != start:
+                    current.make_path()
+                    current = came_from[current]
                 print('path found')
                 return True
 
